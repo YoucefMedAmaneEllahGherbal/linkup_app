@@ -21,11 +21,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     controller = AnimationController(
       vsync: this,
       duration: Duration(seconds: 1),
+      upperBound: 100,
     );
 
     controller.forward();
 
     controller.addListener(() {
+      setState(() {});
       print(controller.value);
     });
   }
@@ -47,7 +49,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   tag: 'logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
-                    height: 60.0,
+                    height: controller.value,
                   ),
                 ),
                 Text(
