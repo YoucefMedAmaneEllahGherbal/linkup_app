@@ -21,32 +21,24 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds: 1),
+      upperBound: 100
     );
-    animation = ColorTween(
-      begin: Colors.red,
-      end: Colors.blue,
-    ).animate(controller);
+    
     controller.forward();
 
     controller.addListener(() {
       setState(() {
-        print(animation.value);
+        print(controller.value);
       });
     });
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    controller.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: animation.value,
+      backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -59,7 +51,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   tag: 'logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
-                    height: 60,
+                    height: controller.value,
                   ),
                 ),
                 Text(
