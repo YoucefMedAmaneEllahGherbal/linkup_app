@@ -39,7 +39,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       color: Colors.black45,
                     ),
                     child: AnimatedTextKit(
-                      animatedTexts: [TypewriterAnimatedText('Link Up')],
+                      animatedTexts: [TypewriterAnimatedText('Link Up' , speed: Duration(milliseconds: 100)) ],
+                      
                     ),
                   ),
                 ),
