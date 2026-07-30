@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'registration_screen.dart';
 import 'login_screen.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String id = 'welcome_screen';
@@ -11,30 +12,6 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController controller;
-  late Animation animation;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 1),
-      upperBound: 100
-    );
-    
-    controller.forward();
-
-    controller.addListener(() {
-      setState(() {
-        print(controller.value);
-      });
-    });
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,15 +28,19 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   tag: 'logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
-                    height: controller.value,
+                    height: 100,
                   ),
                 ),
-                Text(
-                  'Link Up',
-                  style: TextStyle(
-                    fontSize: 50.0,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.black45,
+                SizedBox(
+                  child: DefaultTextStyle(
+                    style: TextStyle(
+                      fontSize: 50.0,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.black45,
+                    ),
+                    child: AnimatedTextKit(
+                      animatedTexts: [TypewriterAnimatedText('Link Up')],
+                    ),
                   ),
                 ),
               ],
