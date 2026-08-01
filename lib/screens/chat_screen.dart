@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatScreen extends StatefulWidget {
-
   static String id = 'chat_screen';
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -10,18 +10,43 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   @override
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  final _auth = FirebaseAuth.instance;
+
+  void getCurrentUser() async {
+    try {
+      final user = await _auth.currentUser;
+
+      User loggedInUser;
+
+      if (user != null) {
+        loggedInUser = user;
+        print(loggedInUser.email);
+
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: null,
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                //Implement logout functionality
-              }),
+            icon: Icon(Icons.close),
+            onPressed: () {
+              //Implement logout functionality
+            },
+          ),
         ],
-        title: Text('⚡️Chat'),
+        title: Text('🔌LinkUp'),
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: SafeArea(
@@ -46,10 +71,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     onPressed: () {
                       //Implement send functionality.
                     },
-                    child: Text(
-                      'Send',
-                      style: kSendButtonTextStyle,
-                    ),
+                    child: Text('Send', style: kSendButtonTextStyle),
                   ),
                 ],
               ),
