@@ -27,13 +27,18 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       final user = await _auth.currentUser;
 
-      
-
       if (user != null) {
         loggedInUser = user;
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  void getMessages() async {
+    final messages = await _firestore.collection('messages').get();
+    for (var message in messages.docs) {
+      print(message.data);
     }
   }
 
@@ -46,8 +51,9 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
-              _auth.signOut();
-              Navigator.pop(context);
+              getMessages();
+              // _auth.signOut();
+              // Navigator.pop(context);
             },
           ),
         ],
@@ -74,7 +80,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      _firestore.collection('messages').add({'sender' : loggedInUser!.email , 'text' : messageText});
+                      _firestore.collection('messages').add({
+                        'sender': loggedInUser!.email,
+                        'text': messageText,
+                      });
                     },
                     child: Text('Send', style: kSendButtonTextStyle),
                   ),
