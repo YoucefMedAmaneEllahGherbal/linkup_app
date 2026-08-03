@@ -78,19 +78,25 @@ class _ChatScreenState extends State<ChatScreen> {
                 }
 
                 final messages = snapshot.data!.docs;
-                List<Text> messageWidgets = [];
+                List<MessageBubble> messageBubbles = [];
 
                 for (var message in messages) {
                   final messageText = message.data()['text'];
                   final messageSender = message.data()['sender'];
 
-                  final messageWidegt = Text(
-                    '$messageText from $messageSender',
+                  final messageWidget = MessageBubble(
+                    messageSender,
+                    messageText,
                   );
 
-                  messageWidgets.add(messageWidegt);
+                  messageBubbles.add(messageWidget);
                 }
-                return Expanded(child: ListView(children: messageWidgets));
+                return Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                    children: messageBubbles,
+                  ),
+                );
               },
             ),
             Container(
@@ -121,6 +127,20 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class MessageBubble extends StatelessWidget {
+  const MessageBubble(this.sender, this.text);
+  final String sender;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.lightBlue,
+      child: Text('$text from $sender', style: TextStyle(fontSize: 50)),
     );
   }
 }
