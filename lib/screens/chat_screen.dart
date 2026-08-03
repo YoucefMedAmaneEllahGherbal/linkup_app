@@ -138,9 +138,26 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.lightBlue,
-      child: Text('$text from $sender', style: TextStyle(fontSize: 50)),
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(sender, style: TextStyle(fontSize: 12, color: Colors.black54)),
+          Material(
+            elevation: 5,
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.lightBlue,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+              child: Text(
+                text,
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
