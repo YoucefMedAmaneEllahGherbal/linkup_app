@@ -73,8 +73,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   if(!snapshot.hasData)
                   {
                     return const Center(
-                      backgroundColor: Colors.blueAccent,
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.blueAccent,
+                      ),
                     );
                   }
 
