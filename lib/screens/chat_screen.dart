@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 final _firestore = FirebaseFirestore.instance;
+User? loggedInUser;
 
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
@@ -23,8 +24,6 @@ class _ChatScreenState extends State<ChatScreen> {
   final messageTextController = TextEditingController();
 
   String? messageText;
-
-  User? loggedInUser;
 
   void getCurrentUser() async {
     try {
@@ -55,9 +54,8 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
-              messagesStream();
-              // _auth.signOut();
-              // Navigator.pop(context);
+              _auth.signOut();
+              Navigator.pop(context);
             },
           ),
         ],
@@ -129,8 +127,15 @@ class MessagesStream extends StatelessWidget {
         for (var message in messages) {
           final messageText = message.data()['text'];
           final messageSender = message.data()['sender'];
-
-          final messageWidget = MessageBubble(messageSender, messageText);
+          if (loggedInUser == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final currentUser = loggedInUser!.email;
+          final messageWidget = MessageBubble(
+            messageSender,
+            messageText,
+            currentUser == messageSender,
+          );
 
           messageBubbles.add(messageWidget);
         }
@@ -146,22 +151,29 @@ class MessagesStream extends StatelessWidget {
 }
 
 class MessageBubble extends StatelessWidget {
-  const MessageBubble(this.sender, this.text);
+  const MessageBubble(this.sender, this.text, this.isMe);
   final String sender;
   final String text;
+  final bool isMe;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: isMe
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
         children: [
           Text(sender, style: TextStyle(fontSize: 12, color: Colors.black54)),
           Material(
             elevation: 5,
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.lightBlue,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30),
+            ),
+            color: isMe ? Colors.blueAccent : Colors.orange[400]!,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
               child: Text(
