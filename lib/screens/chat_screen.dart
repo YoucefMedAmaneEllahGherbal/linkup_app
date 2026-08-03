@@ -73,6 +73,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   if(!snapshot.hasData)
                   {
                     return const Center(
+                      backgroundColor: Colors.blueAccent,
                       child: CircularProgressIndicator(),
                     );
                   }
@@ -80,7 +81,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 final messages = snapshot.data!.docs;
                 List<Text> messageWidgets = [];
 
-                
+
                   for (var message in messages) {
                     final messageText = message.data()['text'];
                     final messageSender = message.data()['sender'];
