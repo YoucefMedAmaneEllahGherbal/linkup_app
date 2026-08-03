@@ -69,31 +69,28 @@ class _ChatScreenState extends State<ChatScreen> {
             StreamBuilder(
               stream: _firestore.collection('messages').snapshots(),
               builder: (context, snapshot) {
-
-                  if(!snapshot.hasData)
-                  {
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.blueAccent,
-                      ),
-                    );
-                  }
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.blueAccent,
+                    ),
+                  );
+                }
 
                 final messages = snapshot.data!.docs;
                 List<Text> messageWidgets = [];
 
+                for (var message in messages) {
+                  final messageText = message.data()['text'];
+                  final messageSender = message.data()['sender'];
 
-                  for (var message in messages) {
-                    final messageText = message.data()['text'];
-                    final messageSender = message.data()['sender'];
+                  final messageWidegt = Text(
+                    '$messageText from $messageSender',
+                  );
 
-                    final messageWidegt = Text(
-                      '$messageText from $messageSender',
-                    );
-
-                    messageWidgets.add(messageWidegt);
-                  }
-                  return Column(children: messageWidgets);
+                  messageWidgets.add(messageWidegt);
+                }
+                return Expanded(child: ListView(children: messageWidgets));
               },
             ),
             Container(
